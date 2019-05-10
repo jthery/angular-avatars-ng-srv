@@ -24,10 +24,10 @@ app.use(cors());
 app.use('/api/v1', api); // localhost:3000/api/v1
 // si on atteind ce middleware, et bien ça signifie qu'on a jamais recupérer nos données dans index.jss
 app.use((req, res) => {
-    const err = new Error('404 - Not found !!!!!');
-    err.status = 404;
-    res.json({ msg: '404 - not found !!!!', err: err });
-})
+	const err = new Error('404 - Not found !!!!!');
+	err.status = 404;
+	res.json({ msg: '404 - not found !!!!', err: err });
+});
 
 // pour la connexion à MongoDB
 mongoose.connect('mongodb://localhost:27017/listavatars', { useNewUrlParser: true });
