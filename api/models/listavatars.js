@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const listavatarSchema = new mongoose.Schema({
+const listavatarsSchema = new mongoose.Schema({
 	name: String,
 	tel: String,
 	image: String,
@@ -8,4 +8,4 @@ const listavatarSchema = new mongoose.Schema({
 	createdOn: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Listavatar', listavatarSchema);
+module.exports = mongoose.model('Listavatars', listavatarsSchema);

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Listavatar = require('../models/blogpost');
+const Listavatars = require('../models/listavatars');
 const mongoose = require('mongoose');
 
 
@@ -11,8 +11,8 @@ router.get('/ping', (req, res) => {
 
 // route qui permet de récupérer tous les avatars
 router.get('/list-avatars', (req,res) => {
-	Listavatar.find()
-		.then(listAvatars => res.status(200).json(listAvatars))
+	Listavatars.find()
+		.then(avatars => res.status(200).json(avatars))
 		.catch(err => res.status(500).json({
 			message: 'list avatars not found :(',
 			error: err
@@ -23,34 +23,51 @@ router.get('/list-avatars', (req,res) => {
 // obligatoire : body-parser, route qui permet d'ajouter un avatar
 router.post('/list-avatars', (req, res) => {
 	console.log('req.body', req.body);
-	const listAvatar = new Listavatar(req.body);
-	listAvatar.save((err, listAvatar) => {
+	const avatar = new Listavatars(req.body);
+	avatar.save((err, avatar) => {
 		if (err) {
 			return res.status(500).json(err);
 		}
-		res.status(201).json(listAvatar);
+		res.status(201).json(avatar);
 	});
 });
+
 
 // route pour récupérer un id
 router.get('/list-avatars/:id', (req, res) => {
 	const id = req.params.id;
-	Listavatar.findById(id)
-		.then(listAvatar => res.status(200).json(listAvatar))
-		.catch(err => res.status(500).json({
-			message: `avatar with id ${id} not found`,
-			error: err
-		}));
+	Listavatars.findById(id)
+	.then(avatar => res.status(200).json(avatar))
+	.catch(err => res.status(500).json({
+		message: `avatar with id ${id} not found`,
+		error: err
+	}));
 });
 
 // route pour la supression d'un seul id à la fois
+router.put('/list-avatars/:id', (req, res) => {
+		// exports.updateRecipe = function (req, res) {
+		// 	Recipe.findOneAndUpdate({ id: req.params.id }, req.body, { new: true }, function (err, task) {
+		// 		if (err)
+		// 			res.send(err);
+		// 		res.json(task);
+		// 	});
+		// };
+		// Listavatars.findByIdAndUpdate({ id: req.params.id }, req.body, {new: true}, (err, result) => {
+		// 	if (err) res.send(err);
+		// 	res.json(result);
+		// });
+});
+
+	
+
 router.delete('/list-avatars/:id', (req, res) => {
 	const id = req.params.id;
-	Listavatar.findByIdAndDelete(id, (err, listAvatar) => {
+	Listavatars.findByIdAndDelete(id, (err, avatar) => {
 		if (err) {
 			return res.status(500).json(err);
 		}
-		res.status(202).json({ msg: `avatar with id ${listAvatar._id} deleted`});
+		res.status(202).json({ msg: `avatar with id ${avatar._id} deleted`});
 	});
 }); // DELETE http://localhost:3000/api/v1/list-avatars/:id
 
@@ -67,7 +84,7 @@ router.delete('/list-avatars', (req, res) => {
 		}
 	});
 	const condition = { _id: { $in: allIds } };
-	Listavatar.deleteMany(condition, (err, result) => {
+	Listavatars.deleteMany(condition, (err, result) => {
 		if (err) {
 			return res.status(500).json(err);
 		}
